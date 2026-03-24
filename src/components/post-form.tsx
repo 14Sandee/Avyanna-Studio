@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { RichTextEditor } from "@/components/rich-text-editor";
 import { createPost, updatePost, uploadImage } from "@/lib/db";
 import { BlogPost, AffiliateLink } from "@/lib/types";
+import Image from "next/image";
 import { Plus, Trash2, Upload, Loader2 } from "lucide-react";
 
 interface PostFormProps {
@@ -168,11 +169,16 @@ export function PostForm({ post }: PostFormProps) {
           </label>
         </div>
         {coverImage && (
-          <img
-            src={coverImage}
-            alt="Cover preview"
-            className="w-full max-h-48 object-cover rounded-xl mt-3 border border-stone-100"
-          />
+          <div className="relative w-full h-48 mt-3">
+            <Image
+              src={coverImage}
+              alt="Cover preview"
+              fill
+              sizes="(max-width: 768px) 100vw, 768px"
+              className="object-cover rounded-xl border border-stone-100"
+              unoptimized
+            />
+          </div>
         )}
       </div>
 
@@ -274,11 +280,16 @@ export function PostForm({ post }: PostFormProps) {
               className="h-10 text-sm border-stone-200 focus-visible:ring-stone-300 bg-white"
             />
             {link.image && (
-              <img
-                src={link.image}
-                alt={link.label}
-                className="w-20 h-20 object-cover rounded-lg border border-stone-100"
-              />
+              <div className="relative w-20 h-20">
+                <Image
+                  src={link.image}
+                  alt={link.label}
+                  fill
+                  sizes="80px"
+                  className="object-cover rounded-lg border border-stone-100"
+                  unoptimized
+                />
+              </div>
             )}
           </div>
         ))}

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Navbar } from "@/components/navbar";
@@ -75,10 +76,14 @@ export default async function BlogDetailPage({
       <main className="flex-1">
         {/* Hero / Cover Image */}
         <div className="relative w-full h-[40vh] md:h-[50vh] overflow-hidden">
-          <img
+          <Image
             src={post.cover_image}
             alt={post.title}
-            className="w-full h-full object-cover"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover"
+            unoptimized={!post.cover_image.includes('unsplash') && !post.cover_image.includes('supabase')}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
         </div>

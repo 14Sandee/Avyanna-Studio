@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { ExternalLink, ShoppingBag } from "lucide-react";
 import { AffiliateLink } from "@/lib/types";
 
@@ -23,11 +24,14 @@ export function AffiliateCard({ links }: { links: AffiliateLink[] }) {
           >
             {/* Product image */}
             {link.image && (
-              <div className="aspect-square overflow-hidden">
-                <img
+              <div className="relative aspect-square overflow-hidden">
+                <Image
                   src={link.image}
                   alt={link.label}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  fill
+                  sizes="300px"
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  unoptimized
                 />
               </div>
             )}

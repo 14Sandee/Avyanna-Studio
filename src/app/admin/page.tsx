@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { getAllPosts, deletePost } from "@/lib/db";
@@ -129,10 +130,13 @@ export default function AdminDashboard() {
             >
               <div className="flex items-center gap-4 flex-1 min-w-0">
                 {post.cover_image && (
-                  <img
+                  <Image
                     src={post.cover_image}
                     alt=""
-                    className="w-12 h-12 rounded-md object-cover shrink-0"
+                    width={48}
+                    height={48}
+                    className="rounded-md object-cover shrink-0"
+                    unoptimized
                   />
                 )}
                 <div className="min-w-0">

@@ -7,6 +7,7 @@ function InstagramIcon({ className }: { className?: string }) {
     </svg>
   );
 }
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 
 function PinterestIcon({ className }: { className?: string }) {
@@ -57,10 +58,12 @@ export function PinterestSection() {
             rel="noopener noreferrer"
             className="group relative overflow-hidden rounded-2xl aspect-[3/4] shadow-sm hover:shadow-xl hover:shadow-stone-200/50 transition-all duration-500 hover:-translate-y-1"
           >
-            <img
+            <Image
               src={pin}
               alt="Pinterest inspiration"
-              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+              fill
+              sizes="(max-width: 768px) 50vw, 25vw"
+              className="object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end justify-center pb-6">
               <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/90 backdrop-blur-sm">
@@ -106,10 +109,12 @@ export function InstagramSection() {
             rel="noopener noreferrer"
             className="group relative overflow-hidden rounded-xl aspect-square shadow-sm hover:shadow-lg transition-all duration-500 hover:-translate-y-0.5"
           >
-            <img
+            <Image
               src={post}
               alt="Instagram post"
-              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+              fill
+              sizes="(max-width: 768px) 33vw, 16vw"
+              className="object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
               <InstagramIcon className="w-6 h-6 text-white drop-shadow-lg" />

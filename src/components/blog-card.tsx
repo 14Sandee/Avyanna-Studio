@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { BlogPost } from "@/lib/types";
@@ -9,10 +10,13 @@ export function BlogCard({ post }: { post: BlogPost }) {
       <div className="overflow-hidden rounded-2xl bg-white border border-stone-100 hover:shadow-xl hover:shadow-stone-200/40 transition-all duration-500 hover:-translate-y-1">
         {/* Cover image */}
         <div className="relative aspect-[4/3] overflow-hidden">
-          <img
+          <Image
             src={post.cover_image}
             alt={post.title}
-            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+            unoptimized={!post.cover_image.includes('unsplash') && !post.cover_image.includes('supabase')}
           />
           {/* Gradient overlay on hover */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
