@@ -1,4 +1,12 @@
-import { Instagram } from "lucide-react";
+function InstagramIcon({ className }: { className?: string }) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+      <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+    </svg>
+  );
+}
 import { Button } from "@/components/ui/button";
 
 function PinterestIcon({ className }: { className?: string }) {
@@ -79,7 +87,7 @@ export function InstagramSection() {
     <section className="py-20">
       <div className="text-center mb-12">
         <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-pink-50/50 mb-4">
-          <Instagram className="w-4 h-4 text-pink-400" />
+          <InstagramIcon className="w-4 h-4 text-pink-400" />
           <span className="text-sm tracking-[0.1em] uppercase text-pink-400 font-light">
             Instagram
           </span>
@@ -104,7 +112,7 @@ export function InstagramSection() {
               className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-              <Instagram className="w-6 h-6 text-white drop-shadow-lg" />
+              <InstagramIcon className="w-6 h-6 text-white drop-shadow-lg" />
             </div>
           </a>
         ))}
