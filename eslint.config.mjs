@@ -36,6 +36,7 @@ const eslintConfig = defineConfig([
       'no-duplicate-imports': 'error',
       'prefer-const': 'error',
       'no-var': 'error',
+      'func-style': ['error', 'expression'],
       eqeqeq: ['error', 'always'],
       curly: ['warn', 'multi-line'],
 
