@@ -1,7 +1,19 @@
-import Link from "next/link";
+import Link from 'next/link';
+
+import { SOCIAL_LINKS } from '@/lib/constants';
+
 function InstagramIcon({ className }: { className?: string }) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
       <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
       <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
       <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
@@ -19,33 +31,46 @@ function PinterestIcon({ className }: { className?: string }) {
 
 export function Footer() {
   return (
-    <footer className="bg-stone-900 mt-auto">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+    <footer className="mt-auto bg-stone-900">
+      <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 gap-12 md:grid-cols-3">
           {/* Brand */}
           <div>
-            <h3 className="text-xl tracking-[0.25em] font-light text-white uppercase mb-4">
+            <h3 className="mb-4 text-xl font-light tracking-[0.25em] text-white uppercase">
               Avyanna Studio
             </h3>
-            <p className="text-base text-stone-400 leading-relaxed">
-              Curating beauty, style, and intentional living. Your destination for aesthetic inspiration.
+            <p className="text-base leading-relaxed text-stone-400">
+              Curating beauty, style, and intentional living. Your destination for aesthetic
+              inspiration.
             </p>
           </div>
 
           {/* Links */}
           <div>
-            <h4 className="text-sm tracking-[0.15em] uppercase text-stone-500 mb-5">Explore</h4>
+            <h4 className="mb-5 text-sm tracking-[0.15em] text-stone-500 uppercase">Explore</h4>
             <div className="flex flex-col gap-3">
-              <Link href="/blog" className="text-base text-stone-400 hover:text-white transition-colors">
+              <Link
+                href="/blog"
+                className="text-base text-stone-400 transition-colors hover:text-white"
+              >
                 Blog
               </Link>
-              <Link href="/blog?category=fashion" className="text-base text-stone-400 hover:text-white transition-colors">
+              <Link
+                href="/blog?category=fashion"
+                className="text-base text-stone-400 transition-colors hover:text-white"
+              >
                 Fashion
               </Link>
-              <Link href="/blog?category=beauty" className="text-base text-stone-400 hover:text-white transition-colors">
+              <Link
+                href="/blog?category=beauty"
+                className="text-base text-stone-400 transition-colors hover:text-white"
+              >
                 Beauty
               </Link>
-              <Link href="/blog?category=lifestyle" className="text-base text-stone-400 hover:text-white transition-colors">
+              <Link
+                href="/blog?category=lifestyle"
+                className="text-base text-stone-400 transition-colors hover:text-white"
+              >
                 Lifestyle
               </Link>
             </div>
@@ -53,30 +78,30 @@ export function Footer() {
 
           {/* Social */}
           <div>
-            <h4 className="text-sm tracking-[0.15em] uppercase text-stone-500 mb-5">Connect</h4>
+            <h4 className="mb-5 text-sm tracking-[0.15em] text-stone-500 uppercase">Connect</h4>
             <div className="flex gap-4">
               <a
-                href="https://pin.it/4HEUB8kyH"
+                href={SOCIAL_LINKS.pinterest}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full bg-stone-800 hover:bg-stone-700 flex items-center justify-center text-stone-400 hover:text-white transition-all"
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-stone-800 text-stone-400 transition-all hover:bg-stone-700 hover:text-white"
               >
-                <PinterestIcon className="w-4 h-4" />
+                <PinterestIcon className="h-4 w-4" />
               </a>
               <a
-                href="https://instagram.com"
+                href={SOCIAL_LINKS.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full bg-stone-800 hover:bg-stone-700 flex items-center justify-center text-stone-400 hover:text-white transition-all"
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-stone-800 text-stone-400 transition-all hover:bg-stone-700 hover:text-white"
               >
-                <InstagramIcon className="w-4 h-4" />
+                <InstagramIcon className="h-4 w-4" />
               </a>
             </div>
           </div>
         </div>
 
-        <div className="border-t border-stone-800 mt-12 pt-8 text-center">
-          <p className="text-sm text-stone-500 tracking-wide">
+        <div className="mt-12 border-t border-stone-800 pt-8 text-center">
+          <p className="text-sm tracking-wide text-stone-500">
             &copy; {new Date().getFullYear()} Avyanna Studio. All rights reserved.
           </p>
         </div>
