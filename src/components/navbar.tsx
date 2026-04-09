@@ -1,39 +1,39 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X } from 'lucide-react';
+import Link from 'next/link';
+import { useState } from 'react';
 
 const navLinks = [
-  { href: "/", label: "Home" },
-  { href: "/blog", label: "Blog" },
-  { href: "/admin", label: "Studio" },
+  { href: '/', label: 'Home' },
+  { href: '/blog', label: 'Blog' },
+  { href: '/admin', label: 'Studio' },
 ];
 
-export function Navbar() {
+export const Navbar = () => {
   const [open, setOpen] = useState(false);
 
   return (
     <>
-      <nav className="sticky top-0 z-50 bg-white/70 backdrop-blur-xl border-b border-stone-100/50">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-[72px]">
+      <nav className="sticky top-0 z-50 border-b border-stone-100/50 bg-white/70 backdrop-blur-xl">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div className="flex h-[72px] items-center justify-between">
             <Link href="/" className="flex flex-col">
-              <span className="text-base tracking-[0.25em] font-light text-stone-800 uppercase">
+              <span className="text-base font-light tracking-[0.25em] text-stone-800 uppercase">
                 Avyanna
               </span>
-              <span className="text-[9px] tracking-[0.35em] uppercase text-stone-400 -mt-0.5">
+              <span className="-mt-0.5 text-[9px] tracking-[0.35em] text-stone-400 uppercase">
                 Studio
               </span>
             </Link>
 
             {/* Desktop nav */}
-            <div className="hidden md:flex items-center gap-1">
+            <div className="hidden items-center gap-1 md:flex">
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="px-4 py-2 text-[15px] tracking-[0.05em] text-stone-500 hover:text-stone-900 rounded-lg hover:bg-stone-50 transition-all duration-200"
+                  className="rounded-lg px-4 py-2 text-[15px] tracking-[0.05em] text-stone-500 transition-all duration-200 hover:bg-stone-50 hover:text-stone-900"
                 >
                   {link.label}
                 </Link>
@@ -43,12 +43,12 @@ export function Navbar() {
             {/* Mobile hamburger */}
             <button
               onClick={() => setOpen(!open)}
-              className="md:hidden p-2 rounded-lg hover:bg-stone-50 transition-colors"
+              className="rounded-lg p-2 transition-colors hover:bg-stone-50 md:hidden"
             >
               {open ? (
-                <X className="w-6 h-6 text-stone-600" />
+                <X className="h-6 w-6 text-stone-600" />
               ) : (
-                <Menu className="w-6 h-6 text-stone-600" />
+                <Menu className="h-6 w-6 text-stone-600" />
               )}
             </button>
           </div>
@@ -64,20 +64,20 @@ export function Navbar() {
             onClick={() => setOpen(false)}
           />
           {/* Menu panel */}
-          <div className="absolute right-0 top-0 h-full w-[280px] bg-white shadow-2xl">
-            <div className="pt-24 px-8">
+          <div className="absolute top-0 right-0 h-full w-[280px] bg-white shadow-2xl">
+            <div className="px-8 pt-24">
               <div className="mb-8">
-                <span className="text-base tracking-[0.25em] font-light text-stone-800 uppercase">
+                <span className="text-base font-light tracking-[0.25em] text-stone-800 uppercase">
                   Avyanna Studio
                 </span>
-                <div className="w-8 h-[1px] bg-stone-200 mt-3" />
+                <div className="mt-3 h-[1px] w-8 bg-stone-200" />
               </div>
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
                   onClick={() => setOpen(false)}
-                  className="block py-4 text-lg tracking-wide text-stone-600 hover:text-stone-900 border-b border-stone-50 transition-colors"
+                  className="block border-b border-stone-50 py-4 text-lg tracking-wide text-stone-600 transition-colors hover:text-stone-900"
                 >
                   {link.label}
                 </Link>
@@ -88,4 +88,4 @@ export function Navbar() {
       )}
     </>
   );
-}
+};

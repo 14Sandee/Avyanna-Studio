@@ -71,6 +71,21 @@ create policy "Anyone can upload images"
   to anon
   with check (bucket_id = 'images');
 
+create policy "Authenticated users can upload images"
+  on storage.objects for insert
+  to authenticated
+  with check (bucket_id = 'images');
+
+create policy "Authenticated users can update images"
+  on storage.objects for update
+  to authenticated
+  using (bucket_id = 'images');
+
+create policy "Authenticated users can delete images"
+  on storage.objects for delete
+  to authenticated
+  using (bucket_id = 'images');
+
 -- 9. Seed some demo blog posts
 insert into posts (title, slug, content, cover_image, category, tags, affiliate_links, excerpt, published) values
 (

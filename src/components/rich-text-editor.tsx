@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { useEditor, EditorContent } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import Link from "@tiptap/extension-link";
-import ImageExt from "@tiptap/extension-image";
-import Placeholder from "@tiptap/extension-placeholder";
+import ImageExt from '@tiptap/extension-image';
+import Link from '@tiptap/extension-link';
+import Placeholder from '@tiptap/extension-placeholder';
+import { useEditor, EditorContent } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
 import {
   Bold,
   Italic,
@@ -17,32 +17,57 @@ import {
   Undo,
   Redo,
   Quote,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useCallback, useEffect } from "react";
+} from 'lucide-react';
+import { useCallback, useEffect } from 'react';
+
+import { Button } from '@/components/ui/button';
+
+const ToolbarButton = ({
+  onClick,
+  active,
+  children,
+  title,
+}: {
+  onClick: () => void;
+  active?: boolean;
+  children: React.ReactNode;
+  title?: string;
+}) => {
+  return (
+    <Button
+      type="button"
+      variant="ghost"
+      size="sm"
+      onClick={onClick}
+      title={title}
+      className={`h-9 w-9 rounded-lg p-0 ${active ? 'bg-stone-200 text-stone-800' : 'text-stone-500 hover:text-stone-800'}`}
+    >
+      {children}
+    </Button>
+  );
+};
 
 interface RichTextEditorProps {
   content: string;
   onChange: (html: string) => void;
 }
 
-export function RichTextEditor({ content, onChange }: RichTextEditorProps) {
+export const RichTextEditor = ({ content, onChange }: RichTextEditorProps) => {
   const editor = useEditor({
     immediatelyRender: false,
     extensions: [
       StarterKit,
       Link.configure({ openOnClick: false }),
       ImageExt,
-      Placeholder.configure({ placeholder: "Start writing your post..." }),
+      Placeholder.configure({ placeholder: 'Start writing your post...' }),
     ],
-    content: content || "",
+    content: content || '',
     onUpdate: ({ editor }) => {
       onChange(editor.getHTML());
     },
     editorProps: {
       attributes: {
-        class:
-          "prose prose-stone max-w-none min-h-[300px] focus:outline-none p-5 text-base",
+        class: 'prose prose-stone max-w-none min-h-[300px] focus:outline-none p-5 text-base',
       },
     },
   });
@@ -56,7 +81,7 @@ export function RichTextEditor({ content, onChange }: RichTextEditorProps) {
 
   const addLink = useCallback(() => {
     if (!editor) return;
-    const url = window.prompt("Enter URL:");
+    const url = window.prompt('Enter URL:');
     if (url) {
       editor.chain().focus().setLink({ href: url }).run();
     }
@@ -64,7 +89,7 @@ export function RichTextEditor({ content, onChange }: RichTextEditorProps) {
 
   const addImage = useCallback(() => {
     if (!editor) return;
-    const url = window.prompt("Enter image URL:");
+    const url = window.prompt('Enter image URL:');
     if (url) {
       editor.chain().focus().setImage({ src: url }).run();
     }
@@ -72,113 +97,88 @@ export function RichTextEditor({ content, onChange }: RichTextEditorProps) {
 
   if (!editor) {
     return (
-      <div className="border border-stone-200 rounded-xl overflow-hidden">
-        <div className="p-5 min-h-[300px] text-stone-300 text-base">
-          Loading editor...
-        </div>
+      <div className="overflow-hidden rounded-xl border border-stone-200">
+        <div className="min-h-[300px] p-5 text-base text-stone-300">Loading editor...</div>
       </div>
     );
   }
 
-  const ToolbarButton = ({
-    onClick,
-    active,
-    children,
-    title,
-  }: {
-    onClick: () => void;
-    active?: boolean;
-    children: React.ReactNode;
-    title?: string;
-  }) => (
-    <Button
-      type="button"
-      variant="ghost"
-      size="sm"
-      onClick={onClick}
-      title={title}
-      className={`h-9 w-9 p-0 rounded-lg ${active ? "bg-stone-200 text-stone-800" : "text-stone-500 hover:text-stone-800"}`}
-    >
-      {children}
-    </Button>
-  );
-
   return (
-    <div className="border border-stone-200 rounded-xl overflow-hidden">
+    <div className="overflow-hidden rounded-xl border border-stone-200">
       {/* Toolbar */}
-      <div className="flex flex-wrap gap-1 p-2 border-b border-stone-100 bg-stone-50/80">
+      <div className="flex flex-wrap gap-1 border-b border-stone-100 bg-stone-50/80 p-2">
         <ToolbarButton
           onClick={() => editor.chain().focus().toggleBold().run()}
-          active={editor.isActive("bold")}
+          active={editor.isActive('bold')}
           title="Bold"
         >
-          <Bold className="w-4 h-4" />
+          <Bold className="h-4 w-4" />
         </ToolbarButton>
         <ToolbarButton
           onClick={() => editor.chain().focus().toggleItalic().run()}
-          active={editor.isActive("italic")}
+          active={editor.isActive('italic')}
           title="Italic"
         >
-          <Italic className="w-4 h-4" />
+          <Italic className="h-4 w-4" />
         </ToolbarButton>
 
-        <div className="w-px h-6 bg-stone-200 mx-1 self-center" />
+        <div className="mx-1 h-6 w-px self-center bg-stone-200" />
 
         <ToolbarButton
           onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-          active={editor.isActive("heading", { level: 2 })}
+          active={editor.isActive('heading', { level: 2 })}
           title="Heading 2"
         >
-          <Heading2 className="w-4 h-4" />
+          <Heading2 className="h-4 w-4" />
         </ToolbarButton>
         <ToolbarButton
           onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-          active={editor.isActive("heading", { level: 3 })}
+          active={editor.isActive('heading', { level: 3 })}
           title="Heading 3"
         >
-          <Heading3 className="w-4 h-4" />
+          <Heading3 className="h-4 w-4" />
         </ToolbarButton>
 
-        <div className="w-px h-6 bg-stone-200 mx-1 self-center" />
+        <div className="mx-1 h-6 w-px self-center bg-stone-200" />
 
         <ToolbarButton
           onClick={() => editor.chain().focus().toggleBulletList().run()}
-          active={editor.isActive("bulletList")}
+          active={editor.isActive('bulletList')}
           title="Bullet List"
         >
-          <List className="w-4 h-4" />
+          <List className="h-4 w-4" />
         </ToolbarButton>
         <ToolbarButton
           onClick={() => editor.chain().focus().toggleOrderedList().run()}
-          active={editor.isActive("orderedList")}
+          active={editor.isActive('orderedList')}
           title="Ordered List"
         >
-          <ListOrdered className="w-4 h-4" />
+          <ListOrdered className="h-4 w-4" />
         </ToolbarButton>
         <ToolbarButton
           onClick={() => editor.chain().focus().toggleBlockquote().run()}
-          active={editor.isActive("blockquote")}
+          active={editor.isActive('blockquote')}
           title="Quote"
         >
-          <Quote className="w-4 h-4" />
+          <Quote className="h-4 w-4" />
         </ToolbarButton>
 
-        <div className="w-px h-6 bg-stone-200 mx-1 self-center" />
+        <div className="mx-1 h-6 w-px self-center bg-stone-200" />
 
-        <ToolbarButton onClick={addLink} active={editor.isActive("link")} title="Add Link">
-          <LinkIcon className="w-4 h-4" />
+        <ToolbarButton onClick={addLink} active={editor.isActive('link')} title="Add Link">
+          <LinkIcon className="h-4 w-4" />
         </ToolbarButton>
         <ToolbarButton onClick={addImage} title="Add Image">
-          <ImageIcon className="w-4 h-4" />
+          <ImageIcon className="h-4 w-4" />
         </ToolbarButton>
 
         <div className="flex-1" />
 
         <ToolbarButton onClick={() => editor.chain().focus().undo().run()} title="Undo">
-          <Undo className="w-4 h-4" />
+          <Undo className="h-4 w-4" />
         </ToolbarButton>
         <ToolbarButton onClick={() => editor.chain().focus().redo().run()} title="Redo">
-          <Redo className="w-4 h-4" />
+          <Redo className="h-4 w-4" />
         </ToolbarButton>
       </div>
 
@@ -186,4 +186,4 @@ export function RichTextEditor({ content, onChange }: RichTextEditorProps) {
       <EditorContent editor={editor} />
     </div>
   );
-}
+};

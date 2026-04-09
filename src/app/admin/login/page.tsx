@@ -1,28 +1,29 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabase";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Loader2, ArrowLeft, Lock } from "lucide-react";
-import Link from "next/link";
+import { Loader2, ArrowLeft, Lock } from 'lucide-react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
-export default function LoginPage() {
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { supabase } from '@/lib/supabase';
+
+const LoginPage = () => {
   const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
-  const [mode, setMode] = useState<"login" | "forgot">("login");
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [mode, setMode] = useState<'login' | 'forgot'>('login');
 
-  async function handleLogin(e: React.FormEvent) {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError("");
+    setError('');
 
     try {
       const { error } = await supabase.auth.signInWithPassword({
@@ -34,101 +35,102 @@ export default function LoginPage() {
       // If "remember me" is unchecked, session will be cleared on tab close
       if (!rememberMe) {
         // Store a flag so we can clear session on window close
-        sessionStorage.setItem("avyanna_no_persist", "true");
+        sessionStorage.setItem('avyanna_no_persist', 'true');
       } else {
-        sessionStorage.removeItem("avyanna_no_persist");
+        sessionStorage.removeItem('avyanna_no_persist');
       }
 
-      router.replace("/admin");
+      router.replace('/admin');
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : "Invalid email or password");
+      setError(err instanceof Error ? err.message : 'Invalid email or password');
     } finally {
       setLoading(false);
     }
-  }
+  };
 
-  async function handleForgotPassword(e: React.FormEvent) {
+  const handleForgotPassword = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError("");
-    setSuccess("");
+    setError('');
+    setSuccess('');
 
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: `${window.location.origin}/admin/login`,
       });
       if (error) throw error;
-      setSuccess("Password reset link sent! Check your email inbox.");
+      setSuccess('Password reset link sent! Check your email inbox.');
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : "Failed to send reset email");
+      setError(err instanceof Error ? err.message : 'Failed to send reset email');
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-stone-50 via-white to-stone-100 px-4">
+    <div className="flex min-h-screen items-center justify-center bg-linear-to-br from-stone-50 via-white to-stone-100 px-4">
       {/* Background pattern */}
-      <div className="absolute inset-0 opacity-[0.015]" style={{
-        backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-      }} />
+      <div
+        className="absolute inset-0 opacity-[0.015]"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+        }}
+      />
 
       <div className="relative w-full max-w-md">
         {/* Back to site */}
         <Link
           href="/"
-          className="inline-flex items-center gap-1.5 text-sm text-stone-400 hover:text-stone-600 transition-colors mb-8"
+          className="mb-8 inline-flex items-center gap-1.5 text-sm text-stone-400 transition-colors hover:text-stone-600"
         >
-          <ArrowLeft className="w-4 h-4" />
+          <ArrowLeft className="h-4 w-4" />
           Back to Avyanna Studio
         </Link>
 
         {/* Card */}
-        <div className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-xl shadow-stone-200/50 border border-stone-100 p-8 md:p-10">
+        <div className="rounded-2xl border border-stone-100 bg-white/80 p-8 shadow-xl shadow-stone-200/50 backdrop-blur-xl md:p-10">
           {/* Logo */}
-          <div className="text-center mb-8">
-            <div className="w-12 h-12 rounded-full bg-stone-900 flex items-center justify-center mx-auto mb-4">
-              <Lock className="w-5 h-5 text-white" />
+          <div className="mb-8 text-center">
+            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-stone-900">
+              <Lock className="h-5 w-5 text-white" />
             </div>
-            <h1 className="text-lg tracking-[0.25em] font-light text-stone-800 uppercase mb-2">
+            <h1 className="mb-2 text-lg font-light tracking-[0.25em] text-stone-800 uppercase">
               Avyanna Studio
             </h1>
-            <div className="w-8 h-[1px] bg-stone-300 mx-auto mb-3" />
+            <div className="mx-auto mb-3 h-[1px] w-8 bg-stone-300" />
             <p className="text-sm tracking-wider text-stone-400 uppercase">
-              {mode === "login" ? "Admin Login" : "Reset Password"}
+              {mode === 'login' ? 'Admin Login' : 'Reset Password'}
             </p>
           </div>
 
           {error && (
-            <div className="bg-red-50 border border-red-100 rounded-lg px-4 py-3 mb-6">
+            <div className="mb-6 rounded-lg border border-red-100 bg-red-50 px-4 py-3">
               <p className="text-sm text-red-600">{error}</p>
             </div>
           )}
 
           {success && (
-            <div className="bg-green-50 border border-green-100 rounded-lg px-4 py-3 mb-6">
+            <div className="mb-6 rounded-lg border border-green-100 bg-green-50 px-4 py-3">
               <p className="text-sm text-green-700">{success}</p>
             </div>
           )}
 
-          {mode === "login" ? (
+          {mode === 'login' ? (
             <form onSubmit={handleLogin} className="space-y-5">
               <div className="space-y-2">
-                <Label className="text-xs tracking-[0.1em] uppercase text-stone-400">
-                  Email
-                </Label>
+                <Label className="text-xs tracking-widest text-stone-400 uppercase">Email</Label>
                 <Input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@example.com"
                   required
-                  className="h-12 text-base border-stone-200 bg-stone-50/50 focus-visible:ring-stone-300 focus-visible:bg-white transition-colors"
+                  className="h-12 border-stone-200 bg-stone-50/50 text-base transition-colors focus-visible:bg-white focus-visible:ring-stone-300"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label className="text-xs tracking-[0.1em] uppercase text-stone-400">
+                <Label className="text-xs tracking-widest text-stone-400 uppercase">
                   Password
                 </Label>
                 <Input
@@ -138,13 +140,13 @@ export default function LoginPage() {
                   placeholder="Enter your password"
                   required
                   minLength={6}
-                  className="h-12 text-base border-stone-200 bg-stone-50/50 focus-visible:ring-stone-300 focus-visible:bg-white transition-colors"
+                  className="h-12 border-stone-200 bg-stone-50/50 text-base transition-colors focus-visible:bg-white focus-visible:ring-stone-300"
                 />
               </div>
 
               {/* Remember me + Forgot password */}
               <div className="flex items-center justify-between">
-                <label className="flex items-center gap-2 cursor-pointer">
+                <label className="flex cursor-pointer items-center gap-2">
                   <input
                     type="checkbox"
                     checked={rememberMe}
@@ -157,11 +159,11 @@ export default function LoginPage() {
                 <button
                   type="button"
                   onClick={() => {
-                    setMode("forgot");
-                    setError("");
-                    setSuccess("");
+                    setMode('forgot');
+                    setError('');
+                    setSuccess('');
                   }}
-                  className="text-sm text-stone-400 hover:text-stone-700 transition-colors"
+                  className="text-sm text-stone-400 transition-colors hover:text-stone-700"
                 >
                   Forgot password?
                 </button>
@@ -170,56 +172,46 @@ export default function LoginPage() {
               <Button
                 type="submit"
                 disabled={loading}
-                className="w-full h-12 bg-stone-800 hover:bg-stone-900 text-white text-sm tracking-[0.15em] uppercase transition-all"
+                className="h-12 w-full bg-stone-800 text-sm tracking-[0.15em] text-white uppercase transition-all hover:bg-stone-900"
               >
-                {loading ? (
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                ) : (
-                  "Sign In"
-                )}
+                {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Sign In'}
               </Button>
             </form>
           ) : (
             <form onSubmit={handleForgotPassword} className="space-y-5">
-              <p className="text-sm text-stone-500 leading-relaxed">
+              <p className="text-sm leading-relaxed text-stone-500">
                 Enter your email address and we&apos;ll send you a link to reset your password.
               </p>
 
               <div className="space-y-2">
-                <Label className="text-xs tracking-[0.1em] uppercase text-stone-400">
-                  Email
-                </Label>
+                <Label className="text-xs tracking-widest text-stone-400 uppercase">Email</Label>
                 <Input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@example.com"
                   required
-                  className="h-12 text-base border-stone-200 bg-stone-50/50 focus-visible:ring-stone-300 focus-visible:bg-white transition-colors"
+                  className="h-12 border-stone-200 bg-stone-50/50 text-base transition-colors focus-visible:bg-white focus-visible:ring-stone-300"
                 />
               </div>
 
               <Button
                 type="submit"
                 disabled={loading}
-                className="w-full h-12 bg-stone-800 hover:bg-stone-900 text-white text-sm tracking-[0.15em] uppercase transition-all"
+                className="h-12 w-full bg-stone-800 text-sm tracking-[0.15em] text-white uppercase transition-all hover:bg-stone-900"
               >
-                {loading ? (
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                ) : (
-                  "Send Reset Link"
-                )}
+                {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Send Reset Link'}
               </Button>
 
               <div className="text-center">
                 <button
                   type="button"
                   onClick={() => {
-                    setMode("login");
-                    setError("");
-                    setSuccess("");
+                    setMode('login');
+                    setError('');
+                    setSuccess('');
                   }}
-                  className="text-sm text-stone-400 hover:text-stone-700 transition-colors"
+                  className="text-sm text-stone-400 transition-colors hover:text-stone-700"
                 >
                   Back to Sign In
                 </button>
@@ -228,10 +220,12 @@ export default function LoginPage() {
           )}
         </div>
 
-        <p className="text-center text-xs text-stone-300 mt-6 tracking-wide">
+        <p className="mt-6 text-center text-xs tracking-wide text-stone-300">
           Secured by Supabase Auth
         </p>
       </div>
     </div>
   );
-}
+};
+
+export default LoginPage;

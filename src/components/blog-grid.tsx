@@ -1,20 +1,21 @@
-import { BlogCard } from "./blog-card";
-import { BlogPost } from "@/lib/types";
+import type { BlogPost } from '@/lib/types';
 
-export function BlogGrid({ posts }: { posts: BlogPost[] }) {
+import { BlogCard } from './blog-card';
+
+export const BlogGrid = ({ posts }: { posts: BlogPost[] }) => {
   if (posts.length === 0) {
     return (
-      <div className="text-center py-20">
-        <p className="text-stone-400 text-sm tracking-wide">No posts found.</p>
+      <div className="py-20 text-center">
+        <p className="text-sm tracking-wide text-stone-400">No posts found.</p>
       </div>
     );
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {posts.map((post) => (
         <BlogCard key={post.id} post={post} />
       ))}
     </div>
   );
-}
+};

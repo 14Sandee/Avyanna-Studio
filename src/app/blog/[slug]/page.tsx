@@ -1,22 +1,19 @@
-import Image from "next/image";
-import { notFound } from "next/navigation";
-import Link from "next/link";
-import { Navbar } from "@/components/navbar";
-import { Footer } from "@/components/footer";
-import { BlogCard } from "@/components/blog-card";
-import { AffiliateCard } from "@/components/affiliate-card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { getPostBySlug, getRelatedPosts } from "@/lib/db";
-import { ArrowLeft, Share2, Clock } from "lucide-react";
+import { ArrowLeft, Share2, Clock } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { notFound } from 'next/navigation';
+
+import { AffiliateCard } from '@/components/affiliate-card';
+import { BlogCard } from '@/components/blog-card';
+import { Footer } from '@/components/footer';
+import { Navbar } from '@/components/navbar';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { getPostBySlug, getRelatedPosts } from '@/lib/db';
 
 export const revalidate = 60;
 
-export default async function BlogDetailPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+const BlogDetailPage = async ({ params }: { params: Promise<{ slug: string }> }) => {
   const { slug } = await params;
 
   let post: Awaited<ReturnType<typeof getPostBySlug>> = null;
@@ -36,33 +33,36 @@ export default async function BlogDetailPage({
   }
 
   // Fix content that might have been saved incorrectly by the editor
-  function cleanContent(html: string): string {
-    if (!html) return "";
+  const cleanContent = (html: string): string => {
+    if (!html) return '';
     let cleaned = html;
     // Strip <pre><code> wrappers (editor bug saved HTML as code block)
-    cleaned = cleaned.replace(/<pre><code[^>]*>/gi, "").replace(/<\/code><\/pre>/gi, "");
+    cleaned = cleaned.replace(/<pre><code[^>]*>/gi, '').replace(/<\/code><\/pre>/gi, '');
     // Unescape HTML entities
     cleaned = cleaned
-      .replace(/&lt;/g, "<")
-      .replace(/&gt;/g, ">")
-      .replace(/&amp;/g, "&")
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&amp;/g, '&')
       .replace(/&quot;/g, '"')
       .replace(/''/g, "'");
     // If there are no HTML tags at all, wrap in <p>
-    if (!cleaned.includes("<")) {
+    if (!cleaned.includes('<')) {
       cleaned = `<p>${cleaned}</p>`;
     }
     return cleaned;
-  }
+  };
 
   const content = cleanContent(post.content);
-  const readTime = Math.max(1, Math.ceil(content.replace(/<[^>]*>/g, "").split(/\s+/).length / 200));
+  const readTime = Math.max(
+    1,
+    Math.ceil(content.replace(/<[^>]*>/g, '').split(/\s+/).length / 200),
+  );
   let affiliateLinks: Array<{ label: string; url: string; image?: string; price?: string }> = [];
   try {
     const raw = post.affiliate_links;
     if (Array.isArray(raw)) {
       affiliateLinks = raw;
-    } else if (typeof raw === "string") {
+    } else if (typeof raw === 'string') {
       affiliateLinks = JSON.parse(raw);
     }
   } catch {
@@ -75,7 +75,7 @@ export default async function BlogDetailPage({
 
       <main className="flex-1">
         {/* Hero / Cover Image */}
-        <div className="relative w-full h-[40vh] md:h-[50vh] overflow-hidden">
+        <div className="relative h-[40vh] w-full overflow-hidden md:h-[50vh]">
           <Image
             src={post.cover_image}
             alt={post.title}
@@ -83,50 +83,52 @@ export default async function BlogDetailPage({
             priority
             sizes="100vw"
             className="object-cover"
-            unoptimized={!post.cover_image.includes('unsplash') && !post.cover_image.includes('supabase')}
+            unoptimized={
+              !post.cover_image.includes('unsplash') && !post.cover_image.includes('supabase')
+            }
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-t from-black/40 to-transparent" />
         </div>
 
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 -mt-20 relative z-10">
+        <div className="relative z-10 mx-auto -mt-20 max-w-6xl px-4 sm:px-6 lg:px-8">
           {/* Header Card — full width */}
-          <div className="max-w-3xl bg-white rounded-2xl p-8 md:p-10 shadow-lg shadow-stone-200/30 border border-stone-100 mb-10">
+          <div className="mb-10 max-w-3xl rounded-2xl border border-stone-100 bg-white p-8 shadow-lg shadow-stone-200/30 md:p-10">
             <Link
               href="/blog"
-              className="inline-flex items-center gap-2 text-sm text-stone-400 hover:text-stone-600 transition-colors mb-6"
+              className="mb-6 inline-flex items-center gap-2 text-sm text-stone-400 transition-colors hover:text-stone-600"
             >
-              <ArrowLeft className="w-4 h-4" />
+              <ArrowLeft className="h-4 w-4" />
               Back to Blog
             </Link>
 
-            <div className="flex items-center gap-3 mb-4">
+            <div className="mb-4 flex items-center gap-3">
               <Badge
                 variant="secondary"
-                className="text-xs tracking-wider uppercase font-normal px-3 py-1 rounded-full"
+                className="rounded-full px-3 py-1 text-xs font-normal tracking-wider uppercase"
               >
-                {post.category.replace(/-/g, " ")}
+                {post.category.replace(/-/g, ' ')}
               </Badge>
               <span className="flex items-center gap-1.5 text-sm text-stone-400">
-                <Clock className="w-3.5 h-3.5" />
+                <Clock className="h-3.5 w-3.5" />
                 {readTime} min read
               </span>
             </div>
 
-            <h1 className="text-3xl md:text-4xl font-light tracking-wide text-stone-800 leading-snug mb-4">
+            <h1 className="mb-4 text-3xl leading-snug font-light tracking-wide text-stone-800 md:text-4xl">
               {post.title}
             </h1>
 
             <p className="text-base text-stone-400">
-              {new Date(post.created_at).toLocaleDateString("en-US", {
-                month: "long",
-                day: "numeric",
-                year: "numeric",
+              {new Date(post.created_at).toLocaleDateString('en-US', {
+                month: 'long',
+                day: 'numeric',
+                year: 'numeric',
               })}
             </p>
           </div>
 
           {/* Content + Sidebar */}
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-10">
+          <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_300px]">
             {/* Article */}
             <article className="prose overflow-hidden">
               <div dangerouslySetInnerHTML={{ __html: content }} />
@@ -134,16 +136,14 @@ export default async function BlogDetailPage({
 
             {/* Sidebar — sticky on desktop */}
             <aside className="w-full">
-              <div className="lg:sticky lg:top-24 space-y-6">
+              <div className="space-y-6 lg:sticky lg:top-24">
                 {/* Affiliate Products */}
-                {affiliateLinks.length > 0 && (
-                  <AffiliateCard links={affiliateLinks} />
-                )}
+                {affiliateLinks.length > 0 && <AffiliateCard links={affiliateLinks} />}
 
                 {/* Tags */}
                 {post.tags && post.tags.length > 0 && (
-                  <div className="bg-stone-50 rounded-2xl p-6 border border-stone-100">
-                    <h4 className="text-sm tracking-[0.12em] uppercase text-stone-400 mb-3">
+                  <div className="rounded-2xl border border-stone-100 bg-stone-50 p-6">
+                    <h4 className="mb-3 text-sm tracking-[0.12em] text-stone-400 uppercase">
                       Tags
                     </h4>
                     <div className="flex flex-wrap gap-2">
@@ -161,14 +161,12 @@ export default async function BlogDetailPage({
                 )}
 
                 {/* Share */}
-                <div className="bg-stone-50 rounded-2xl p-6 border border-stone-100">
-                  <h4 className="text-sm tracking-[0.12em] uppercase text-stone-400 mb-3">
-                    Share
-                  </h4>
+                <div className="rounded-2xl border border-stone-100 bg-stone-50 p-6">
+                  <h4 className="mb-3 text-sm tracking-[0.12em] text-stone-400 uppercase">Share</h4>
                   <div className="flex gap-2">
                     <a
                       href={`https://pinterest.com/pin/create/button/?url=${encodeURIComponent(
-                        `${process.env.NEXT_PUBLIC_SITE_URL}/blog/${post.slug}`
+                        `${process.env.NEXT_PUBLIC_SITE_URL}/blog/${post.slug}`,
                       )}&description=${encodeURIComponent(post.title)}`}
                       target="_blank"
                       rel="noopener noreferrer"
@@ -179,9 +177,9 @@ export default async function BlogDetailPage({
                     </a>
                     <a
                       href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
-                        post.title
+                        post.title,
                       )}&url=${encodeURIComponent(
-                        `${process.env.NEXT_PUBLIC_SITE_URL}/blog/${post.slug}`
+                        `${process.env.NEXT_PUBLIC_SITE_URL}/blog/${post.slug}`,
                       )}`}
                       target="_blank"
                       rel="noopener noreferrer"
@@ -199,11 +197,11 @@ export default async function BlogDetailPage({
 
         {/* Related Posts */}
         {relatedPosts.length > 0 && (
-          <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-            <h2 className="text-lg tracking-wide font-light text-stone-600 mb-8 text-center">
+          <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
+            <h2 className="mb-8 text-center text-lg font-light tracking-wide text-stone-600">
               You May Also Like
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {relatedPosts.map((rp) => (
                 <BlogCard key={rp.id} post={rp} />
               ))}
@@ -215,4 +213,6 @@ export default async function BlogDetailPage({
       <Footer />
     </>
   );
-}
+};
+
+export default BlogDetailPage;
