@@ -37,7 +37,7 @@ export const Footer = () => {
           {/* Brand */}
           <div>
             <h3 className="mb-4 text-xl font-light tracking-[0.25em] text-white uppercase">
-              Avyanna Studio
+              Avyanna Deals
             </h3>
             <p className="text-base leading-relaxed text-stone-400">
               Today&apos;s Amazon + Myntra Deals | Updated 9AM

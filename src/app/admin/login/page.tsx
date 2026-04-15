@@ -84,7 +84,7 @@ const LoginPage = () => {
           className="mb-8 inline-flex items-center gap-1.5 text-sm text-stone-400 transition-colors hover:text-stone-600"
         >
           <ArrowLeft className="h-4 w-4" />
-          Back to Avyanna Studio
+          Back to Avyanna Deals
         </Link>
 
         {/* Card */}
@@ -95,7 +95,7 @@ const LoginPage = () => {
               <Lock className="h-5 w-5 text-white" />
             </div>
             <h1 className="mb-2 text-lg font-light tracking-[0.25em] text-stone-800 uppercase">
-              Avyanna Studio
+              Avyanna Deals
             </h1>
             <div className="mx-auto mb-3 h-[1px] w-8 bg-stone-300" />
             <p className="text-sm tracking-wider text-stone-400 uppercase">

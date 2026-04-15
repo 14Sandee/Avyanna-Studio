@@ -13,12 +13,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Avyanna Studio | Curating Beauty, Style & Intentional Living',
+  title: "Avyanna Deals | Today's Amazon + Myntra Deals",
   description:
-    'Your go-to destination for aesthetic inspiration — fashion, beauty, lifestyle, home decor, wellness, and travel.',
+    "Today's best deals from Amazon and Myntra — updated daily at 9AM.",
   openGraph: {
-    title: 'Avyanna Studio',
-    description: 'Curating beauty, style, and intentional living.',
+    title: 'Avyanna Deals',
+    description: "Today's Amazon + Myntra Deals | Updated 9AM",
     type: 'website',
   },
 };

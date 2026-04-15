@@ -68,7 +68,7 @@ export const Navbar = () => {
             <div className="px-8 pt-24">
               <div className="mb-8">
                 <span className="text-base font-light tracking-[0.25em] text-stone-800 uppercase">
-                  Avyanna Studio
+                  Avyanna Deals
                 </span>
                 <div className="mt-3 h-[1px] w-8 bg-stone-200" />
               </div>

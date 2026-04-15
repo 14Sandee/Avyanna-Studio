@@ -27,7 +27,7 @@ const SidebarContent = ({
       {/* Header */}
       <div className="border-b border-stone-100 p-6">
         <h2 className="text-sm font-light tracking-[0.2em] text-stone-700 uppercase">
-          Avyanna Studio
+          Avyanna Deals
         </h2>
         <p className="mt-1 text-xs tracking-wider text-stone-300 uppercase">Admin Panel</p>
       </div>
