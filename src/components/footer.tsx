@@ -40,8 +40,7 @@ export const Footer = () => {
               Avyanna Studio
             </h3>
             <p className="text-base leading-relaxed text-stone-400">
-              Curating beauty, style, and intentional living. Your destination for aesthetic
-              inspiration.
+              Today&apos;s Amazon + Myntra Deals | Updated 9AM
             </p>
           </div>
 
@@ -101,8 +100,11 @@ export const Footer = () => {
         </div>
 
         <div className="mt-12 border-t border-stone-800 pt-8 text-center">
+          <p className="mb-2 text-center text-xs text-[#666]">
+            As an Amazon Associate and Myntra affiliate, I earn from qualifying purchases.
+          </p>
           <p className="text-sm tracking-wide text-stone-500">
-            &copy; {new Date().getFullYear()} Avyanna Studio. All rights reserved.
+            &copy; {new Date().getFullYear()} Avyanna Deals. All rights reserved.
           </p>
         </div>
       </div>
