@@ -7,7 +7,7 @@ import { useState } from 'react';
 const navLinks = [
   { href: '/', label: 'Home' },
   { href: '/blog', label: 'Blog' },
-  { href: '/admin', label: 'Studio' },
+  { href: '/admin', label: 'Admin' },
 ];
 
 export const Navbar = () => {
@@ -23,7 +23,7 @@ export const Navbar = () => {
                 Avyanna
               </span>
               <span className="-mt-0.5 text-[9px] tracking-[0.35em] text-stone-400 uppercase">
-                Studio
+                Deals
               </span>
             </Link>
 

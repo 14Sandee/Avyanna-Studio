@@ -46,15 +46,14 @@ const HomePage = async () => {
             <h1 className="mb-6 text-5xl font-extralight tracking-[0.08em] text-stone-800 md:text-7xl lg:text-8xl">
               Avyanna
               <span className="mt-2 block text-3xl font-light tracking-[0.3em] text-stone-400 md:text-4xl lg:text-5xl">
-                STUDIO
+                DEALS
               </span>
             </h1>
 
             <div className="mx-auto mb-6 h-[1px] w-12 bg-linear-to-r from-transparent via-stone-400 to-transparent" />
 
             <p className="mx-auto max-w-lg text-base leading-relaxed font-light text-stone-400 md:text-lg">
-              Where beauty meets intention. Discover curated stories on fashion, lifestyle, and the
-              art of living well.
+              Today&apos;s best deals from Amazon and Myntra — updated daily at 9AM.
             </p>
 
             <div className="mt-12 flex items-center justify-center gap-4">
