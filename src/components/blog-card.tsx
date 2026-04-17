@@ -23,13 +23,32 @@ export const BlogCard = ({ post }: { post: BlogPost }) => {
           />
           {/* Gradient overlay on hover */}
           <div className="absolute inset-0 bg-linear-to-t from-black/30 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-          <div className="absolute top-4 left-4">
+          <div className="absolute top-4 left-4 flex items-center gap-1.5">
             <Badge
               variant="secondary"
               className="rounded-full bg-white/90 px-3 py-1 text-[10px] font-normal tracking-[0.12em] text-stone-600 uppercase shadow-sm backdrop-blur-md"
             >
               {post.category.replace(/-/g, ' ')}
             </Badge>
+            {post.platform && (
+              <Badge
+                className={`rounded-full px-2.5 py-1 text-[10px] font-normal tracking-[0.08em] uppercase shadow-sm backdrop-blur-md ${
+                  post.platform === 'amazon'
+                    ? 'bg-orange-500/90 text-white'
+                    : post.platform === 'myntra'
+                      ? 'bg-pink-500/90 text-white'
+                      : post.platform === 'flipkart'
+                        ? 'bg-blue-500/90 text-white'
+                        : post.platform === 'ajio'
+                          ? 'bg-purple-500/90 text-white'
+                          : post.platform === 'nykaa'
+                            ? 'bg-rose-400/90 text-white'
+                            : 'bg-stone-500/90 text-white'
+                }`}
+              >
+                {post.platform}
+              </Badge>
+            )}
           </div>
           {/* Arrow indicator */}
           <div className="absolute right-4 bottom-4 flex h-8 w-8 translate-y-2 items-center justify-center rounded-full bg-white/90 opacity-0 shadow-sm backdrop-blur-md transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">

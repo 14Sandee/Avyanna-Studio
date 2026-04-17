@@ -9,6 +9,7 @@ import {
   EyeOff,
   FileText,
   Loader2,
+  TrendingUp,
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -139,6 +140,24 @@ const AdminDashboard = () => {
                       <span className="flex items-center gap-1 text-[10px] text-stone-400">
                         <EyeOff className="h-3 w-3" /> Draft
                       </span>
+                    )}
+                    {post.is_trending && (
+                      <span className="flex items-center gap-1 text-[10px] text-amber-600">
+                        <TrendingUp className="h-3 w-3" /> Trending
+                      </span>
+                    )}
+                    {post.platform && (
+                      <Badge
+                        className={`text-[9px] font-normal tracking-wider uppercase ${
+                          post.platform === 'amazon'
+                            ? 'bg-orange-100 text-orange-600'
+                            : post.platform === 'myntra'
+                              ? 'bg-pink-100 text-pink-600'
+                              : 'bg-stone-100 text-stone-500'
+                        }`}
+                      >
+                        {post.platform}
+                      </Badge>
                     )}
                     <span className="text-[10px] text-stone-300">
                       {new Date(post.created_at).toLocaleDateString()}
