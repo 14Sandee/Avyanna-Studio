@@ -1,4 +1,4 @@
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowRight, Sparkles, TrendingUp } from 'lucide-react';
 import Link from 'next/link';
 
 import { BlogGrid } from '@/components/blog-grid';
@@ -6,15 +6,34 @@ import { Footer } from '@/components/footer';
 import { Navbar } from '@/components/navbar';
 import { PinterestSection, InstagramSection } from '@/components/social-section';
 import { Button } from '@/components/ui/button';
-import { getPublishedPosts } from '@/lib/db';
+import { getPublishedPosts, getTrendingPosts, getVisibleSections, getPostsByIds } from '@/lib/db';
+import type { BlogPost, DynamicSection } from '@/lib/types';
 
 export const revalidate = 60;
 
 const HomePage = async () => {
-  let posts: Awaited<ReturnType<typeof getPublishedPosts>> = [];
+  let posts: BlogPost[] = [];
+  let trendingPosts: BlogPost[] = [];
+  let sections: DynamicSection[] = [];
+  let sectionPosts: Record<string, BlogPost[]> = {};
 
   try {
-    posts = await getPublishedPosts();
+    [posts, trendingPosts, sections] = await Promise.all([
+      getPublishedPosts(),
+      getTrendingPosts(),
+      getVisibleSections(),
+    ]);
+
+    // Fetch posts for each dynamic section
+    const sectionPostResults = await Promise.all(
+      sections.map(async (section) => ({
+        sectionId: section.id,
+        posts: await getPostsByIds(section.post_ids),
+      })),
+    );
+    sectionPosts = Object.fromEntries(
+      sectionPostResults.map(({ sectionId, posts: p }) => [sectionId, p]),
+    );
   } catch {
     // Supabase not configured yet
   }
@@ -106,6 +125,81 @@ const HomePage = async () => {
             <BlogGrid posts={featuredPosts} />
           )}
         </section>
+
+        {/* Trending Now */}
+        {trendingPosts.length > 0 && (
+          <>
+            <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+              <div className="h-[1px] w-full bg-linear-to-r from-transparent via-stone-200 to-transparent" />
+            </div>
+
+            <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
+              <div className="mb-10 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-50">
+                    <TrendingUp className="h-4 w-4 text-amber-500" />
+                  </div>
+                  <div>
+                    <p className="mb-1 text-[11px] tracking-[0.2em] text-amber-400 uppercase">
+                      Hot
+                    </p>
+                    <h2 className="text-xl font-light tracking-wide text-stone-700">
+                      Trending Now
+                    </h2>
+                  </div>
+                </div>
+                <Link
+                  href="/blog?filter=trending"
+                  className="group flex items-center gap-2 rounded-lg px-4 py-2 transition-colors hover:bg-stone-50"
+                >
+                  <span className="text-xs tracking-wider text-stone-400 uppercase transition-colors group-hover:text-stone-600">
+                    View all
+                  </span>
+                  <ArrowRight className="h-3.5 w-3.5 text-stone-400 transition-all group-hover:translate-x-0.5 group-hover:text-stone-600" />
+                </Link>
+              </div>
+              <BlogGrid posts={trendingPosts.slice(0, 6)} />
+            </section>
+          </>
+        )}
+
+        {/* Dynamic Sections */}
+        {sections.map((section) => {
+          const sectionData = sectionPosts[section.id] ?? [];
+          if (sectionData.length === 0) return null;
+          return (
+            <div key={section.id}>
+              <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+                <div className="h-[1px] w-full bg-linear-to-r from-transparent via-stone-200 to-transparent" />
+              </div>
+
+              <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
+                <div className="mb-10 flex items-center justify-between">
+                  <div>
+                    {section.subtitle && (
+                      <p className="mb-1 text-[11px] tracking-[0.2em] text-stone-300 uppercase">
+                        {section.subtitle}
+                      </p>
+                    )}
+                    <h2 className="text-xl font-light tracking-wide text-stone-700">
+                      {section.title}
+                    </h2>
+                  </div>
+                  <Link
+                    href={`/blog?section=${section.slug}`}
+                    className="group flex items-center gap-2 rounded-lg px-4 py-2 transition-colors hover:bg-stone-50"
+                  >
+                    <span className="text-xs tracking-wider text-stone-400 uppercase transition-colors group-hover:text-stone-600">
+                      View all
+                    </span>
+                    <ArrowRight className="h-3.5 w-3.5 text-stone-400 transition-all group-hover:translate-x-0.5 group-hover:text-stone-600" />
+                  </Link>
+                </div>
+                <BlogGrid posts={sectionData.slice(0, 6)} />
+              </section>
+            </div>
+          );
+        })}
 
         {/* Divider */}
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">

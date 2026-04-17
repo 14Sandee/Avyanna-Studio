@@ -30,6 +30,8 @@ export const PostForm = ({ post }: PostFormProps) => {
   const [category, setCategory] = useState(post?.category ?? 'lifestyle');
   const [tags, setTags] = useState(post?.tags?.join(', ') ?? '');
   const [published, setPublished] = useState(post?.published ?? false);
+  const [isTrending, setIsTrending] = useState(post?.is_trending ?? false);
+  const [platform, setPlatform] = useState(post?.platform ?? '');
   const [affiliateLinks, setAffiliateLinks] = useState<AffiliateLink[]>(
     post?.affiliate_links ?? [{ label: '', url: '' }],
   );
@@ -94,6 +96,8 @@ export const PostForm = ({ post }: PostFormProps) => {
       affiliate_links: affiliateLinks.filter((l) => l.label && l.url),
       excerpt,
       published,
+      is_trending: isTrending,
+      platform: platform || null,
     };
 
     try {
@@ -184,8 +188,8 @@ export const PostForm = ({ post }: PostFormProps) => {
         />
       </div>
 
-      {/* Category & Tags */}
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+      {/* Category, Platform & Tags */}
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
         <div className="space-y-2">
           <Label className="text-xs tracking-widest text-stone-400 uppercase">Category</Label>
           <select
@@ -199,6 +203,21 @@ export const PostForm = ({ post }: PostFormProps) => {
             <option value="home-decor">Home Decor</option>
             <option value="wellness">Wellness</option>
             <option value="travel">Travel</option>
+          </select>
+        </div>
+        <div className="space-y-2">
+          <Label className="text-xs tracking-widest text-stone-400 uppercase">Platform</Label>
+          <select
+            value={platform}
+            onChange={(e) => setPlatform(e.target.value)}
+            className="h-11 w-full rounded-lg border border-stone-200 bg-white px-3 text-base focus:ring-2 focus:ring-stone-300 focus:outline-none"
+          >
+            <option value="">None</option>
+            <option value="amazon">Amazon</option>
+            <option value="myntra">Myntra</option>
+            <option value="flipkart">Flipkart</option>
+            <option value="ajio">Ajio</option>
+            <option value="nykaa">Nykaa</option>
           </select>
         </div>
         <div className="space-y-2">
@@ -292,18 +311,32 @@ export const PostForm = ({ post }: PostFormProps) => {
         </Button>
       </div>
 
-      {/* Published */}
-      <div className="flex items-center gap-3 pt-2">
-        <input
-          type="checkbox"
-          id="published"
-          checked={published}
-          onChange={(e) => setPublished(e.target.checked)}
-          className="h-4 w-4 rounded border-stone-300 text-stone-800 focus:ring-stone-300"
-        />
-        <Label htmlFor="published" className="cursor-pointer text-base text-stone-600">
-          Publish this post
-        </Label>
+      {/* Published & Trending */}
+      <div className="space-y-3 pt-2">
+        <div className="flex items-center gap-3">
+          <input
+            type="checkbox"
+            id="published"
+            checked={published}
+            onChange={(e) => setPublished(e.target.checked)}
+            className="h-4 w-4 rounded border-stone-300 text-stone-800 focus:ring-stone-300"
+          />
+          <Label htmlFor="published" className="cursor-pointer text-base text-stone-600">
+            Publish this post
+          </Label>
+        </div>
+        <div className="flex items-center gap-3">
+          <input
+            type="checkbox"
+            id="is_trending"
+            checked={isTrending}
+            onChange={(e) => setIsTrending(e.target.checked)}
+            className="h-4 w-4 rounded border-amber-300 text-amber-600 focus:ring-amber-300"
+          />
+          <Label htmlFor="is_trending" className="cursor-pointer text-base text-stone-600">
+            Mark as Trending
+          </Label>
+        </div>
       </div>
 
       {/* Actions */}
