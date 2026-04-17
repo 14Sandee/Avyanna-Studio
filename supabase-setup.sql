@@ -86,7 +86,58 @@ create policy "Authenticated users can delete images"
   to authenticated
   using (bucket_id = 'images');
 
--- 9. Seed some demo blog posts
+-- 9. Add is_trending column to posts
+alter table posts add column if not exists is_trending boolean default false;
+
+-- 10. Create dynamic sections table
+create table if not exists sections (
+  id uuid default gen_random_uuid() primary key,
+  title text not null,
+  subtitle text not null default '',
+  slug text unique not null,
+  is_visible boolean default true,
+  post_ids uuid[] default '{}',
+  display_order integer default 0,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+-- 11. Enable RLS on sections
+alter table sections enable row level security;
+
+-- 12. Public can read visible sections
+create policy "Public can read visible sections"
+  on sections for select
+  using (is_visible = true);
+
+-- 13. Anon can read all sections (for admin)
+create policy "Anon can read all sections"
+  on sections for select
+  to anon
+  using (true);
+
+create policy "Anon can insert sections"
+  on sections for insert
+  to anon
+  with check (true);
+
+create policy "Anon can update sections"
+  on sections for update
+  to anon
+  using (true)
+  with check (true);
+
+create policy "Anon can delete sections"
+  on sections for delete
+  to anon
+  using (true);
+
+create policy "Authenticated users full access sections"
+  on sections for all
+  using (auth.role() = 'authenticated')
+  with check (auth.role() = 'authenticated');
+
+-- 14. Seed some demo blog posts
 insert into posts (title, slug, content, cover_image, category, tags, affiliate_links, excerpt, published) values
 (
   'The Art of Minimalist Fashion: Capsule Wardrobe Essentials',
