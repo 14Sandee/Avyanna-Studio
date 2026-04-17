@@ -1,6 +1,6 @@
 'use client';
 
-import { LayoutDashboard, PenSquare, LogOut, Globe, Menu, X } from 'lucide-react';
+import { LayoutDashboard, PenSquare, LogOut, Globe, Menu, X, LayoutGrid } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -11,6 +11,7 @@ import { signOut } from '@/lib/auth';
 const links = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/admin/create', label: 'New Post', icon: PenSquare },
+  { href: '/admin/sections', label: 'Sections', icon: LayoutGrid },
 ];
 
 const SidebarContent = ({
